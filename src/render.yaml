@@ -1,0 +1,7 @@
+services:
+  - type: worker
+    name: telegram-sms-bot
+    env: python
+    buildCommand: pip install -r src/requirements.txt
+    startCommand: cd src && bash start.sh
+    plan: free
