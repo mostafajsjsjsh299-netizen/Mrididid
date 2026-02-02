@@ -1478,7 +1478,7 @@ async def mafia_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # لا يمسح بتعديل الملف ، الملف خاص بـ @Dev_Mido
 
-def main():
+async def main():
     app = Application.builder().token(config.BOT_TOKEN).build()
     
     app.add_handler(CommandHandler("start", start))
@@ -1495,14 +1495,17 @@ def main():
     logger.info("Bot Started with Manual States System...")
 # لا يمسح بتعديل الملف ، الملف خاص بـ @Dev_Mido
     try:
-        app.run_polling(drop_pending_updates=True)
+        async with app:
+            await app.start()
+            await app.updater.start_polling(drop_pending_updates=True)
+            await asyncio.Event().wait()
     except Exception as e:
         logger.error(f"Error in run_polling: {e}")
         raise
 
 if __name__ == '__main__':
     try:
-        main()
+        asyncio.run(main())
     except Exception as e:
         logger.error(f"Critical error in main: {e}")
         traceback.print_exc()
